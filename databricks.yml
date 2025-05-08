@@ -4,7 +4,6 @@ bundle:
 include:
   - notebooks/
   - resources/*.yml
-  - resources/permissions.yml
  
 variables:
   cluster_id:
