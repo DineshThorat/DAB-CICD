@@ -1,0 +1,33 @@
+resources:
+  jobs:
+    dltnb:
+      name: dltnb
+      tasks:
+        - task_key: dlt
+          notebook_task:
+            notebook_path: /Workspace/Profitability/gold/fact.copa_items_deliv_ware_logis
+            source: WORKSPACE
+          job_cluster_key: Job_cluster
+        - task_key: dlt22
+          depends_on:
+            - task_key: dlt
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.pipeline_cogs_variance_reusable_obj.id}
+            full_refresh: false
+      job_clusters:
+        - job_cluster_key: Job_cluster
+          new_cluster:
+            spark_version: 15.4.x-scala2.12
+            azure_attributes:
+              first_on_demand: 1
+              availability: ON_DEMAND_AZURE
+              spot_bid_max_price: -1
+            node_type_id: Standard_D4ds_v5
+            spark_env_vars:
+              PYSPARK_PYTHON: /databricks/python3/bin/python3
+            enable_elastic_disk: true
+            data_security_mode: LEGACY_SINGLE_USER_STANDARD
+            runtime_engine: PHOTON
+            num_workers: 8
+      queue:
+        enabled: true

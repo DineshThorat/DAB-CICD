@@ -1,0 +1,33 @@
+resources:
+  jobs:
+    billcondition_rownum:
+      name: billcondition_rownum
+      tasks:
+        - task_key: bilcon_add_rownum
+          notebook_task:
+            notebook_path: /Workspace/Shared/Profitability/gold/Profitability_CDO
+            source: WORKSPACE
+          job_cluster_key: bilcon_add_rownum_cluster
+          max_retries: 2
+          min_retry_interval_millis: 300000
+          retry_on_timeout: true
+      job_clusters:
+        - job_cluster_key: bilcon_add_rownum_cluster
+          new_cluster:
+            cluster_name: ""
+            spark_version: 15.4.x-scala2.12
+            azure_attributes:
+              first_on_demand: 1
+              availability: ON_DEMAND_AZURE
+              spot_bid_max_price: -1
+            node_type_id: Standard_D4ds_v5
+            spark_env_vars:
+              PYSPARK_PYTHON: /databricks/python3/bin/python3
+            enable_elastic_disk: true
+            data_security_mode: USER_ISOLATION
+            runtime_engine: PHOTON
+            autoscale:
+              min_workers: 2
+              max_workers: 5
+      queue:
+        enabled: true

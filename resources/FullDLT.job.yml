@@ -1,0 +1,23 @@
+resources:
+  jobs:
+    FullDLT:
+      name: FullDLT
+      tasks:
+        - task_key: Bronze
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.pipeline_bronze.id}
+            full_refresh: false
+        - task_key: Silver
+          depends_on:
+            - task_key: Bronze
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.pipeline_silver.id}
+            full_refresh: false
+        - task_key: Gold
+          depends_on:
+            - task_key: Silver
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.pipeline_gold.id}
+            full_refresh: false
+      queue:
+        enabled: true

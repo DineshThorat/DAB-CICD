@@ -1,0 +1,15 @@
+resources:
+  pipelines:
+    pipeline_cogs_variance_reusable_obj:
+      name: cogs_variance_reusable_obj
+      clusters:
+        - label: default
+          autoscale:
+            min_workers: 1
+            max_workers: 1
+            mode: ENHANCED
+      libraries:
+        - notebook:
+            path: /Shared/Profitability/gold/cogs_variance_reusable_obj
+
+      data_sampling: false

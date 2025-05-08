@@ -1,0 +1,15 @@
+resources:
+  pipelines:
+    pipeline_shareddlt:
+      name: shareddlt
+      clusters:
+        - label: default
+          autoscale:
+            min_workers: 1
+            max_workers: 5
+            mode: ENHANCED
+      libraries:
+        - notebook:
+            path: /Shared/Profitability/gold/fact.copa_items_test
+      schema: a
+      data_sampling: false

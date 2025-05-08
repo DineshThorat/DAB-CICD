@@ -1,0 +1,220 @@
+variables:
+  my_cluster:
+    description: "My cluster definition"
+    type: complex
+    default:
+      spark_version: 15.4.x-scala2.12
+      azure_attributes:
+        first_on_demand: 1
+        availability: SPOT_WITH_FALLBACK_AZURE
+        spot_bid_max_price: -1
+      node_type_id: Standard_D4ds_v5
+      spark_env_vars:
+        PYSPARK_PYTHON: /databricks/python3/bin/python3
+      enable_elastic_disk: true
+      data_security_mode: USER_ISOLATION
+      runtime_engine: PHOTON
+      num_workers: 8
+# variables:
+#   my_cluster:
+#     description: "My cluster definition"
+#     type: complex
+#     default:
+#       spark_version: "13.2.x-scala2.11"
+#       node_type_id: "Standard_DS3_v2"
+#       num_workers: 3
+#       spark_conf:
+#         spark.speculation: "true"
+#         spark.databricks.delta.retentionDurationCheck.enabled: "false"
+#       data_security_mode: "SINGLE_USER"
+
+# workspace:
+#   root_path: /Workspace/Users/246cfd43-77c5-4c63-8f77-d6a19a3876ec/.bundle/${bundle.name}/${bundle.target}
+
+resources:
+  jobs:
+    Profitability:
+      name: Profitability
+      job_clusters:
+        - job_cluster_key: my_cluster_key
+          new_cluster: ${var.my_cluster}
+      
+      tasks:
+        - task_key: GL_Balances
+          notebook_task:
+            notebook_path: /Workspace/Profitability/DataTransformation(GoldLayer)/Profitability_GL_Balances
+            source: WORKSPACE
+          job_cluster_key: my_cluster_key
+
+        - task_key: Profitability_Vol_Mix_CustMat
+          notebook_task:
+            notebook_path: /Workspace/Profitability/DataTransformation(GoldLayer)/Profitability_Vol_Mix_CustMat
+            source: WORKSPACE
+          job_cluster_key: my_cluster_key
+
+        - task_key: Profitability_vol_mix_salesgrpcustmat
+          notebook_task:
+            notebook_path: /Workspace/Profitability/DataTransformation(GoldLayer)/Profitability_vol_mix_salesgrpcustmat
+            source: WORKSPACE
+          job_cluster_key: my_cluster_key
+
+        - task_key: Vol_Mix_BrandMat
+          notebook_task:
+            notebook_path: /Workspace/Profitability/DataTransformation(GoldLayer)/Profitability_vol_mix_brandmat
+            source: WORKSPACE
+          job_cluster_key: my_cluster_key
+
+        - task_key: Profitability_Vol_Mix_Mat
+          depends_on:
+            - task_key: GL_Balances
+            - task_key: Vol_Mix_BrandMat
+          notebook_task:
+            notebook_path: /Workspace/Profitability/DataTransformation(GoldLayer)/Profitability_Vol_Mix_Mat
+            source: WORKSPACE
+          job_cluster_key: my_cluster_key
+
+        - task_key: copa_items
+          depends_on:
+            - task_key: Profitability_Vol_Mix_CustMat
+            - task_key: Profitability_vol_mix_salesgrpcustmat
+            - task_key: GL_Balances
+            - task_key: Profitability_Vol_Mix_Mat
+            - task_key: Vol_Mix_BrandMat
+          notebook_task:
+            notebook_path: /Workspace/Profitability/DataTransformation(GoldLayer)/fact.copa_items
+            source: WORKSPACE
+          job_cluster_key: my_cluster_key
+
+        - task_key: Customer_Performance
+          depends_on:
+            - task_key: copa_items
+          notebook_task:
+            notebook_path: /Workspace/Profitability/DataTransformation(GoldLayer)/Customer_Performance
+            source: WORKSPACE
+          job_cluster_key: my_cluster_key
+
+        - task_key: profitability01
+          depends_on:
+            - task_key: copa_items
+          notebook_task:
+            notebook_path: /Workspace/Profitability/DataTransformation(GoldLayer)/fact.profitability01
+            base_parameters:
+              environment: Dev
+            source: WORKSPACE
+          job_cluster_key: my_cluster_key
+
+        - task_key: Refresh_Materialized_Views
+          depends_on:
+            - task_key: profitability01
+            - task_key: Customer_Performance
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.pipeline_gold.id}
+            full_refresh: true
+
+      queue:
+        enabled: true
+
+      parameters:
+        - name: end_fisc_per
+          default: ""
+        - name: environment
+          default: test
+        - name: start_fisc_per
+          default: ""
+
+
+
+
+
+
+
+# variables:
+#   my_cluster:
+#     description: 'My cluster definition'
+#     type: complex
+#     default:
+#       spark_version: '13.2.x-scala2.11'
+#       node_type_id: 'Standard_DS3_v2'
+#       num_workers: 2
+#       spark_conf:
+#         spark.speculation: true
+#         spark.databricks.delta.retentionDurationCheck.enabled: false
+
+# resources:
+#   jobs:
+#     Profitability:
+#       name: Profitability
+#       job_clusters:
+#         - job_cluster_key: my_cluster_key
+#           new_cluster: ${var.my_cluster}
+#       tasks:
+#         - task_key: GL_Balances
+#           notebook_task:
+#             notebook_path: /Workspace/Profitability/DataTransformation(GoldLayer)/Profitability_GL_Balances
+#             source: WORKSPACE
+#           new_cluster: ${var.my_cluster}
+#         - task_key: Profitability_Vol_Mix_CustMat
+#           notebook_task:
+#             notebook_path: /Workspace/Profitability/DataTransformation(GoldLayer)/Profitability_Vol_Mix_CustMat
+#             source: WORKSPACE
+#           new_cluster: ${var.my_cluster}
+#         - task_key: Profitability_vol_mix_salesgrpcustmat
+#           notebook_task:
+#             notebook_path: /Workspace/Profitability/DataTransformation(GoldLayer)/Profitability_vol_mix_salesgrpcustmat
+#             source: WORKSPACE
+#           new_cluster: ${var.my_cluster}
+#         - task_key: Vol_Mix_BrandMat
+#           notebook_task:
+#             notebook_path: /Workspace/Profitability/DataTransformation(GoldLayer)/Profitability_vol_mix_brandmat
+#             source: WORKSPACE
+#           new_cluster: ${var.my_cluster}
+#         - task_key: Profitability_Vol_Mix_Mat
+#           depends_on:
+#             - task_key: GL_Balances
+#             - task_key: Vol_Mix_BrandMat
+#           notebook_task:
+#             notebook_path: /Workspace/Profitability/DataTransformation(GoldLayer)/Profitability_Vol_Mix_Mat
+#             source: WORKSPACE
+#           new_cluster: ${var.my_cluster}
+#         - task_key: copa_items
+#           depends_on:
+#             - task_key: Profitability_Vol_Mix_CustMat
+#             - task_key: Profitability_vol_mix_salesgrpcustmat
+#             - task_key: GL_Balances
+#             - task_key: Profitability_Vol_Mix_Mat
+#             - task_key: Vol_Mix_BrandMat
+#           notebook_task:
+#             notebook_path: /Workspace/Profitability/DataTransformation(GoldLayer)/fact.copa_items
+#             source: WORKSPACE
+#           new_cluster: ${var.my_cluster}
+#         - task_key: Customer_Performance
+#           depends_on:
+#             - task_key: copa_items
+#           notebook_task:
+#             notebook_path: /Workspace/Profitability/DataTransformation(GoldLayer)/Customer_Performance
+#             source: WORKSPACE
+#           new_cluster: ${var.my_cluster}
+#         - task_key: profitability01
+#           depends_on:
+#             - task_key: copa_items
+#           notebook_task:
+#             notebook_path: /Workspace/Profitability/DataTransformation(GoldLayer)/fact.profitability01
+#             base_parameters:
+#               environment: Dev
+#             source: WORKSPACE
+#         - task_key: Refresh_Materialized_Views
+#           depends_on:
+#             - task_key: profitability01
+#             - task_key: Customer_Performance
+#           pipeline_task:
+#             pipeline_id: ${resources.pipelines.pipeline_gold.id}
+#             full_refresh: true
+#       queue:
+#         enabled: true
+#       parameters:
+#         - name: end_fisc_per
+#           default: ""
+#         - name: environment
+#           default: test
+#         - name: start_fisc_per
+#           default: ""
