@@ -17,7 +17,8 @@ targets:
     mode: production
     workspace:
       host: https://adb-876191348871446.6.azuredatabricks.net/
-      root_path: /Workspace/Users/dineshashok.thorat@celebaltech.com/Projects/MyAppDeployment
+      # root_path: /Workspace/Users/dineshashok.thorat@celebaltech.com/Projects/MyAppDeployment
+      root_path: /Workspace
       # file_path: /
     variables:
       # cluster_id: "0321-074354-12ouilbh"
