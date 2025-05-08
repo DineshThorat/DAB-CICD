@@ -13,4 +13,4 @@ resources:
             path: /Shared/Profitability/gold/fact.copa_items_deliv_ware_logis
         - notebook:
             path: /Shared/Profitability/gold/fact.copa_items_test
-      data_sampling: false
+   
