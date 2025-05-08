@@ -16,7 +16,7 @@ targets:
     mode: production
     workspace:
       host: https://adb-876191348871446.6.azuredatabricks.net/
-      root_path: /Workspace  # Deploy to root workspace folder
+      root_path: /  # Deploy to root workspace folder
       file_path: /           # This is where files from resources/ and notebooks/ will be uploaded
     variables:
       environment: "PROD"
