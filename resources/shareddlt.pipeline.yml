@@ -12,4 +12,3 @@ resources:
         - notebook:
             path: /Shared/Profitability/gold/fact.copa_items_test
       schema: a
-      data_sampling: false
