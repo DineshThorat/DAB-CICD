@@ -5,8 +5,8 @@ include:
   - resources/*.yml
  
 variables:
-  cluster_id:
-    description: "Databricks Cluster ID"
+  # cluster_id:
+  #   description: "Databricks Cluster ID"
   environment:
     description: "Deployment  Environment"
   policy_id:
