@@ -22,7 +22,7 @@ targets:
     variables:
       # cluster_id: "0321-074354-12ouilbh"
       environment: "PROD"
-      # policy_id: "000422FF13847E21"
+      policy_id: "0004115DEC12AF93"
       
     permissions:
       - user_name: dineshashok.thorat@celebaltech.com
