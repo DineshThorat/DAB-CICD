@@ -17,7 +17,7 @@ targets:
     workspace:
       host: https://adb-876191348871446.6.azuredatabricks.net/
       root_path: /  # Deploy to root workspace folder
-      file_path: /           # This is where files from resources/ and notebooks/ will be uploaded
+      file_path: /   # This is where files from resources/ and notebooks/ will be uploaded
     variables:
       environment: "PROD"
       policy_id: "0004115DEC12AF93"
@@ -26,6 +26,7 @@ targets:
         level: CAN_MANAGE
       - service_principal_name: 246cfd43-77c5-4c63-8f77-d6a19a3876ec
         level: CAN_MANAGE
+
 
 # bundle:
 #   name: udp_bundle
