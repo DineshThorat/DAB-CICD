@@ -24,8 +24,8 @@ targets:
     permissions:
       - user_name: dineshashok.thorat@celebaltech.com
         level: CAN_MANAGE
-
-
+      - service_principal_name: 246cfd43-77c5-4c63-8f77-d6a19a3876ec
+        level: CAN_MANAGE
 
 # bundle:
 #   name: udp_bundle
