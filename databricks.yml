@@ -2,6 +2,7 @@ bundle:
   name: udp_bundle
  
 include:
+  - notebooks/
   - resources/*.yml
   - resources/permissions.yml
  
