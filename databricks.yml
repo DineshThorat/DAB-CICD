@@ -1,0 +1,29 @@
+bundle:
+  name: udp_bundle
+ 
+include:
+  - resources/*.yml
+  - resources/permissions.yml
+ 
+variables:
+  cluster_id:
+    description: "Databricks Cluster ID"
+  environment:
+    description: "Deployment  Environment"
+  policy_id:
+    description: "Policy ID for Job Clusters"
+ 
+targets:
+  prod:
+    mode: production
+    workspace:
+      host: https://adb-876191348871446.6.azuredatabricks.net/
+      root_path: /Workspace/Shared/udp_bundle
+    variables:
+      # cluster_id: "0321-074354-12ouilbh"
+      environment: "PROD"
+      # policy_id: "000422FF13847E21"
+      
+    permissions:
+      - user_name: dineshashok.thorat@celebaltech.com
+        level: CAN_MANAGE
