@@ -6,7 +6,7 @@ on:
 jobs:
   deploy_prod:
     name: "Deploy Databricks Bundle"
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     environment: prod
     defaults:
       run:
