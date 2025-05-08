@@ -1,3 +1,4 @@
+
 name: Deploy to Prod
 
 on:
@@ -46,10 +47,8 @@ jobs:
           databricks bundle validate -t prod --debug
         env:
           DATABRICKS_HOST: 'https://adb-876191348871446.6.azuredatabricks.net'
-          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID_PROD }}
-          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET_PROD }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_PAT_PROD }}
           DATABRICKS_BUNDLE_ENV: prod
-          DATABRICKS_AUTH_TYPE: oauth
           
       - name: Deploy Databricks Bundle
         run: |
@@ -57,7 +56,70 @@ jobs:
           databricks bundle deploy -t prod
         env:
           DATABRICKS_HOST: 'https://adb-876191348871446.6.azuredatabricks.net'
-          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID_PROD }}
-          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET_PROD }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_PAT_PROD }}
           DATABRICKS_BUNDLE_ENV: prod
-          DATABRICKS_AUTH_TYPE: oauth
+
+
+# name: Deploy to Prod
+
+# on:
+#   workflow_dispatch:
+
+# jobs:
+#   deploy_prod:
+#     name: "Deploy Databricks Bundle"
+#     runs-on: ubuntu-latest
+#     environment: prod
+#     defaults:
+#       run:
+#         working-directory: .
+
+#     steps:
+#       - name: Checkout Repository
+#         uses: actions/checkout@v4
+
+#       - name: Set up Python 3.10
+#         uses: actions/setup-python@v4
+#         with:
+#           python-version: '3.10'
+
+#       - name: Install Python Dependencies
+#         run: |
+#           python -m pip install --upgrade pip
+#           pip install wheel
+
+#       - name: Install Databricks CLI v2
+#         run: |
+#           curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | bash
+#         shell: bash
+
+#       - name: Add Databricks CLI to PATH
+#         run: echo "$HOME/.databricks/bin" >> $GITHUB_PATH
+
+#       - name: Check Databricks CLI Version
+#         run: databricks version
+
+#       - name: Set HOME variable
+#         run: echo "HOME=/home/github-runner" >> $GITHUB_ENV
+
+#       - name: Validate Databricks Bundle
+#         run: |
+#           echo "Starting Databricks Validation..."
+#           databricks bundle validate -t prod --debug
+#         env:
+#           DATABRICKS_HOST: 'https://adb-876191348871446.6.azuredatabricks.net'
+#           DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID_PROD }}
+#           DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET_PROD }}
+#           DATABRICKS_BUNDLE_ENV: prod
+#           DATABRICKS_AUTH_TYPE: oauth
+          
+#       - name: Deploy Databricks Bundle
+#         run: |
+#           echo "Starting Databricks Deployment..."
+#           databricks bundle deploy -t prod
+#         env:
+#           DATABRICKS_HOST: 'https://adb-876191348871446.6.azuredatabricks.net'
+#           DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID_PROD }}
+#           DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET_PROD }}
+#           DATABRICKS_BUNDLE_ENV: prod
+#           DATABRICKS_AUTH_TYPE: oauth
