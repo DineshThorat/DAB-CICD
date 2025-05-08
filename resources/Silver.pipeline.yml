@@ -13,4 +13,4 @@ resources:
             path: /Shared/Profitability/gold/Profitability_CDO
         - notebook:
             path: /Shared/Profitability/gold/fact.profitability01
-      data_sampling: false
+
