@@ -12,4 +12,4 @@ resources:
         - notebook:
             path: /Shared/Profitability/gold/cogs_variance_reusable_obj
 
-      data_sampling: false
+
