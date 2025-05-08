@@ -1,10 +1,7 @@
 name: Deploy to Prod
 
 on:
-  workflow_dispatch:
-  # push:
-  #   branches:
-  #     - main
+  workflow_dispatch: 
 
 jobs:
   deploy_dev:
@@ -29,6 +26,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install wheel
 
+      - name: Install Databricks CLI v2
+        run: |
+          pip install databricks-cli
+          pip install databricks-sdk
+
       - name: Set HOME variable
         run: echo "HOME=/home/github-runner" >> $GITHUB_ENV
 
@@ -41,7 +43,7 @@ jobs:
           DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID_PROD }}
           DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET_PROD }}
           DATABRICKS_BUNDLE_ENV: prod
-          
+
       - name: Deploy Databricks Bundle
         run: |
           echo "Starting Databricks Deployment..."
