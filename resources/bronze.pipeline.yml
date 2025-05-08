@@ -13,4 +13,4 @@ resources:
             path: /Shared/Profitability/gold/std_cogs_latest_rec_per_period
         - notebook:
             path: /Shared/Profitability/gold/Profitability_vol_mix_salesgrpcustmat
-      data_sampling: false
+    
