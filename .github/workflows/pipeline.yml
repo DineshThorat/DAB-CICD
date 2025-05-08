@@ -37,7 +37,7 @@ jobs:
           echo "Starting Databricks Validation..."
           databricks bundle validate -t prod --debug
         env:
-          DATABRICKS_HOST: 'https://adb-1952435459722444.4.azuredatabricks.net'
+          DATABRICKS_HOST: 'https://adb-876191348871446.6.azuredatabricks.net'
           DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID_PROD }}
           DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET_PROD }}
           DATABRICKS_BUNDLE_ENV: prod
@@ -47,7 +47,7 @@ jobs:
           echo "Starting Databricks Deployment..."
           databricks bundle deploy -t prod 
         env:
-          DATABRICKS_HOST: 'https://adb-1952435459722444.4.azuredatabricks.net'
+          DATABRICKS_HOST: 'https://adb-876191348871446.6.azuredatabricks.net'
           DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID_PROD }}
           DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET_PROD }}
           DATABRICKS_BUNDLE_ENV: prod
