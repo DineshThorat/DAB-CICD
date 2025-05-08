@@ -9,7 +9,7 @@ on:
 jobs:
   deploy_dev:
     name: "Deploy Databricks Bundle"
-    runs-on: [ az, prod ]
+    runs-on: ubuntu-latest
     environment: prod
     defaults:
       run:
