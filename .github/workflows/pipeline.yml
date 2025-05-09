@@ -35,7 +35,7 @@ jobs:
           echo "client_secret = $CLIENT_SECRET" >> ~/.databrickscfg
           echo "tenant_id = $TENANT_ID" >> ~/.databrickscfg
         env:
-          DATABRICKS_HOST: 'https://adb-876191348871446.6.azuredatabricks.net'
+          DATABRICKS_HOST: 'https://adb-2341468374037462.2.azuredatabricks.net'
           CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID_PROD }}
           CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET_PROD }}
           TENANT_ID: ${{ secrets.DATABRICKS_TENANT_ID_PROD }}
