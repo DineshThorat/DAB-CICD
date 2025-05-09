@@ -23,22 +23,70 @@ jobs:
           curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh 
           pip install wheel
 
+      - name: Configure Databricks CLI Auth
+        run: |
+          echo "[DEFAULT]" > ~/.databrickscfg
+          echo "host = https://adb-2341468374037462.2.azuredatabricks.net" >> ~/.databrickscfg
+          echo "client_id = $DATABRICKS_CLIENT_ID" >> ~/.databrickscfg
+          echo "client_secret = $DATABRICKS_CLIENT_SECRET" >> ~/.databrickscfg
+          echo "tenant_id = $DATABRICKS_TENANT_ID" >> ~/.databrickscfg
+        env:
+          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID_PROD }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET_PROD }}
+          DATABRICKS_TENANT_ID: ${{ secrets.DATABRICKS_TENANT_ID_PROD }}
+
       - name: Validate Databricks Bundle
         run: |
           echo "Validating Databricks Bundle"
           databricks bundle validate -t prod
-        env:
-          DATABRICKS_HOST: 'https://adb-2341468374037462.2.azuredatabricks.net'
-          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID_PROD }}
-          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET_PROD }}
-          DATABRICKS_TENANT_ID: ${{ secrets.DATABRICKS_TENANT_ID_PROD }}
 
       - name: Deploy Databricks Bundle
         run: |
           echo "Deploying Databricks Bundle"
           databricks bundle deploy -t prod
-        env:
-          DATABRICKS_HOST: 'https://adb-2341468374037462.2.azuredatabricks.net'
-          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID_PROD }}
-          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET_PROD }}
-          DATABRICKS_TENANT_ID: ${{ secrets.DATABRICKS_TENANT_ID_PROD }}
+
+
+# name: Deploy to Prod
+
+# on:
+#   workflow_dispatch:
+
+# jobs:
+#   deploy_prod:
+#     name: "Deploy Databricks Bundle"
+#     runs-on: ubuntu-latest
+#     environment: prod
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
+
+#       - name: Set up Python 3.9
+#         uses: actions/setup-python@v5
+#         with:
+#           python-version: '3.9'
+
+#       - name: Install Databricks CLI and Bundle
+#         run: |
+#           curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh 
+#           pip install wheel
+
+#       - name: Validate Databricks Bundle
+#         run: |
+#           echo "Validating Databricks Bundle"
+#           databricks bundle validate -t prod
+#         env:
+#           DATABRICKS_HOST: 'https://adb-2341468374037462.2.azuredatabricks.net'
+#           DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID_PROD }}
+#           DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET_PROD }}
+#           DATABRICKS_TENANT_ID: ${{ secrets.DATABRICKS_TENANT_ID_PROD }}
+
+#       - name: Deploy Databricks Bundle
+#         run: |
+#           echo "Deploying Databricks Bundle"
+#           databricks bundle deploy -t prod
+#         env:
+#           DATABRICKS_HOST: 'https://adb-2341468374037462.2.azuredatabricks.net'
+#           DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID_PROD }}
+#           DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET_PROD }}
+#           DATABRICKS_TENANT_ID: ${{ secrets.DATABRICKS_TENANT_ID_PROD }}
