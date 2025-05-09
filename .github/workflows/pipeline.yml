@@ -27,20 +27,6 @@ jobs:
           pip install wheel
         shell: bash
 
-      - name: Set up Databricks CLI config
-        run: |
-          echo "[DEFAULT]" > ~/.databrickscfg
-          echo "host = $DATABRICKS_HOST" >> ~/.databrickscfg
-          echo "client_id = $CLIENT_ID" >> ~/.databrickscfg
-          echo "client_secret = $CLIENT_SECRET" >> ~/.databrickscfg
-          echo "tenant_id = $TENANT_ID" >> ~/.databrickscfg
-        env:
-          DATABRICKS_HOST: 'https://adb-2341468374037462.2.azuredatabricks.net'
-          CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID_PROD }}
-          CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET_PROD }}
-          TENANT_ID: ${{ secrets.DATABRICKS_TENANT_ID_PROD }}
-
-
       - name: Validate Databricks Bundle
         run: |
           echo "Starting Databricks Validation..."
@@ -49,18 +35,18 @@ jobs:
           DATABRICKS_HOST: 'https://adb-2341468374037462.2.azuredatabricks.net'
           DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID_PROD }}
           DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET_PROD }}
+          DATABRICKS_TENANT_ID: ${{ secrets.DATABRICKS_TENANT_ID_PROD }}
           DATABRICKS_BUNDLE_ENV: prod
           DATABRICKS_AUTH_TYPE: oauth
-          DATABRICKS_TENANT_ID: ${{ secrets.DATABRICKS_TENANT_ID_PROD }}
 
       - name: Deploy Databricks Bundle
         run: |
           echo "Starting Databricks Deployment..."
           databricks bundle deploy -t prod
         env:
-          DATABRICKS_HOST: 'https://adb-2341468374037462.2.azuredatabricks.net/'
+          DATABRICKS_HOST: 'https://adb-2341468374037462.2.azuredatabricks.net'
           DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID_PROD }}
           DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET_PROD }}
+          DATABRICKS_TENANT_ID: ${{ secrets.DATABRICKS_TENANT_ID_PROD }}
           DATABRICKS_BUNDLE_ENV: prod
           DATABRICKS_AUTH_TYPE: oauth
-          DATABRICKS_TENANT_ID: ${{ secrets.DATABRICKS_TENANT_ID_PROD }}
