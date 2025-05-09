@@ -29,11 +29,10 @@ jobs:
           echo "host = https://adb-2341468374037462.2.azuredatabricks.net" >> ~/.databrickscfg
           echo "client_id = $DATABRICKS_CLIENT_ID" >> ~/.databrickscfg
           echo "client_secret = $DATABRICKS_CLIENT_SECRET" >> ~/.databrickscfg
-          echo "tenant_id = $DATABRICKS_TENANT_ID" >> ~/.databrickscfg
         env:
           DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID_PROD }}
           DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET_PROD }}
-          DATABRICKS_TENANT_ID: ${{ secrets.DATABRICKS_TENANT_ID_PROD }}
+  
 
       - name: Validate Databricks Bundle
         run: |
