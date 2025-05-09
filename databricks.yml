@@ -20,7 +20,7 @@ targets:
       file_path: /   # This is where files from resources/ and notebooks/ will be uploaded
     variables:
       environment: "PROD"
-      policy_id: "0004115DEC12AF93"
+      policy_id: "000CAB5DC475B66C"
     permissions:
       - user_name: dineshashok.thorat@celebaltech.com
         level: CAN_MANAGE
