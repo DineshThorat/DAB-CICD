@@ -27,13 +27,13 @@ jobs:
         run: |
           echo "[DEFAULT]" > ~/.databrickscfg
           echo "host = https://adb-2341468374037462.2.azuredatabricks.net" >> ~/.databrickscfg
-          echo "client_id = 246cfd43-77c5-4c63-8f77-d6a19a3876ec" >> ~/.databrickscfg
-          echo "client_secret = Tue8Q~gG3mqhGtUE1oPKclE.l9JcAIfiDGa0Edb7" >> ~/.databrickscfg
-          echo "tenant_id = e4e34038-ea1f-4882-b6e8-ccd776459ca0" >> ~/.databrickscfg
-        # env:
-        #   DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID_PROD }}
-        #   DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET_PROD }}
-        #   DATABRICKS_TENANT_ID: ${{ secrets.DATABRICKS_TENANT_ID_PROD }}
+          echo "client_id = $DATABRICKS_CLIENT_ID" >> ~/.databrickscfg
+          echo "client_secret = $DATABRICKS_CLIENT_SECRET" >> ~/.databrickscfg
+          echo "tenant_id = $DATABRICKS_TENANT_ID" >> ~/.databrickscfg
+        env:
+          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID_PROD }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET_PROD }}
+          DATABRICKS_TENANT_ID: ${{ secrets.DATABRICKS_TENANT_ID_PROD }}
 
       - name: Validate Databricks Bundle
         run: |
