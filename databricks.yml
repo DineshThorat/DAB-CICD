@@ -2,7 +2,7 @@ bundle:
   name: udp_bundle
 
 include:
-  - notebooks/*.dbc  # Include all notebooks
+  # - Profitability/*.dbc  # Include all notebooks
   - resources/*.yml  # Include all jobs and DLTs
 
 variables:
